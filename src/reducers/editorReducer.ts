@@ -32,10 +32,10 @@ export const INITIAL_ELEMENTS: CanvasElement[] = [
     text: 'Drag elements anywhere inside this canvas!',
     style: {
       color: '#FFFFFF',
-      backgroundColor: '#6366F1',
+      backgroundColor: '#3730A3',
       borderRadius: 12,
       fontSize: 15,
-      fontWeight: 600,
+      fontWeight: 700,
       textAlign: 'center',
     },
   },
@@ -50,7 +50,7 @@ export const INITIAL_ELEMENTS: CanvasElement[] = [
     text: 'Interactive Button',
     style: {
       color: '#FFFFFF',
-      backgroundColor: '#10B981',
+      backgroundColor: '#065F46',
       borderRadius: 10,
       fontSize: 14,
       fontWeight: 700,

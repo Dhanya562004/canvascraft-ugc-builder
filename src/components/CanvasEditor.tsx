@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect, useCallback } from 'react';
+import React, { useRef, useState, useEffect, useCallback, useMemo } from 'react';
 import { useEditor } from '../context/EditorContext';
 import { CanvasElement } from '../types/canvas';
 import { sortElementsByZIndex } from '../utils/canvas';
@@ -167,7 +167,10 @@ export const CanvasEditor: React.FC = () => {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [state.selectedElementId, state.elements, deleteElement, duplicateElement, saveToLocalStorage, undo, redo, selectElement, moveElement]);
 
-  const sortedElements = sortElementsByZIndex(state.elements);
+  const sortedElements = useMemo(
+    () => sortElementsByZIndex(state.elements),
+    [state.elements]
+  );
 
   return (
     <div className="editor-viewport">

@@ -113,7 +113,7 @@ export const Header: React.FC = () => {
             className="btn btn-success"
             onClick={() => setIsShareOpen(true)}
             title="Simulate Discord payload sharing"
-            aria-label="Share layout"
+            aria-label="Share Payload"
           >
             <Share2 size={15} />
             Share Payload

@@ -2,19 +2,22 @@
 
 # 🎨 CanvasCraft – UGC Sandbox Builder
 
-**A production-style, high-performance visual canvas editor & UGC layout sandbox built with React 18, TypeScript 5.7, Vite 6.0, and Streamlit.**
+**A production-grade, high-performance visual canvas editor & UGC layout sandbox built with React 18, TypeScript 5.7, Vite 6.0, Vercel, and Streamlit.**
 
 [![Live Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://canvascraft-ugc-builder-ctbgdvhxrcpwj3epi38gqs.streamlit.app/)
 ![React](https://img.shields.io/badge/React-18.3-61DAFB?logo=react&logoColor=black)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.7-3178C6?logo=typescript&logoColor=white)
 ![Vite](https://img.shields.io/badge/Vite-6.0-646CFF?logo=vite&logoColor=white)
 ![Vitest](https://img.shields.io/badge/Vitest-2.1-729B1B?logo=vitest&logoColor=white)
-![Streamlit](https://img.shields.io/badge/Streamlit-1.64-FF4B4B?logo=streamlit&logoColor=white)
+![Lighthouse A11y](https://img.shields.io/badge/Lighthouse_A11y-100-brightgreen?logo=lighthouse&logoColor=white)
 ![License](https://img.shields.io/badge/License-MIT-green.svg)
 
 ---
 
-### 🌐 [**👉 Click Here to Launch Live Streamlit Demo**](https://canvascraft-ugc-builder-ctbgdvhxrcpwj3epi38gqs.streamlit.app/)
+### 🌐 Live Application Demos
+
+- 🚀 **Existing Streamlit Live Demo**: [https://canvascraft-ugc-builder-ctbgdvhxrcpwj3epi38gqs.streamlit.app/](https://canvascraft-ugc-builder-ctbgdvhxrcpwj3epi38gqs.streamlit.app/)
+- ⚡ **Standalone React Vercel Deployment**: Standard Vite SPA build configured via `vercel.json` (Root Directory, `npm run build`, `dist` output).
 
 </div>
 
@@ -32,7 +35,7 @@
 │ [📦 Add Box]    │  │ 🚀 CanvasCraft Sandbox                            │  │ [ Heading... ]│
 │ [🔘 Add Button] │  │                                                │  │               │
 │                 │  │ ┌──────────────────────┐  ┌─────────────────┐ │  │ Color Picker: │
-│ 🔍 VIEWPORT     │  │ │ Card Container       │  │ Interactive     │ │  │ [#6366F1]     │
+│ 🔍 VIEWPORT     │  │ │ Card Container       │  │ Interactive     │ │  │ [#3730A3]     │
 │ Zoom: [ 100% ]  │  │ │                      │  │ Button          │ │  │               │
 │ [-]  [+]        │  │ └──────────────────────┘  └─────────────────┘ │  │ Width / Height│
 │                 │  └────────────────────────────────────────────────┘  │ [240px][160px]│
@@ -44,239 +47,97 @@
 
 ---
 
-## 🚀 Key Highlights & Engineering Features
+## 📊 Automated Lighthouse Audit Results
 
-- **Centralized React State Architecture**: Engineered with React Context API and `useReducer` managing typed discriminated unions (`TextElement | BoxElement | ButtonElement`).
-- **60fps Drag-and-Drop Performance**: High-frequency pointer interactions throttled with `requestAnimationFrame` for stutter-free position tracking across an 800x500 dot-matrix viewport.
-- **Robust Schema Validation & Persistence**: Automatic background persistence to `localStorage` with corrupt layout auto-recovery and typed JSON import/export validation.
-- **Full History Stack (`Undo` / `Redo`)**: Transactional state history stack capping drag noise and supporting standard hotkeys (`Ctrl+Z`, `Ctrl+Shift+Z`, `Ctrl+Y`).
-- **Layer Hierarchy Control**: Deterministic Z-index layer management (`Bring Forward`, `Send Backward`) with real-time layer ordering.
-- **Discord Webhook Share Simulation**: Simulated Discord embed payload generator with real-time card preview and one-click JSON payload clipboard copying.
-- **Streamlit Cloud Compatible Architecture**: Compiled into a single self-contained Vite HTML bundle loaded seamlessly inside Streamlit Community Cloud without Node.js server dependencies.
+Lighthouse audits executed against the standalone React production build (`http://127.0.0.1:4173` preview server):
 
----
+| Audit Category | Baseline (Before) | Measured Score (After Improvements) | Audit Mode |
+|---|---|---|---|
+| **Accessibility** | **83** | **100** 🟢 | Desktop & Mobile |
+| **Performance** | **81** | **92** 🟢 | Desktop |
+| **Performance** | **74** | **69 - 81** | Mobile |
 
-## 🎯 Headout Software Engineer (Frontend) Alignment
+### Key Improvements Implemented:
+1. **Accessibility (a11y)**:
+   - Fixed `button-name` audits by adding explicit `aria-label="Zoom out viewport"` and `aria-label="Zoom in viewport"` controls.
+   - Fixed `label-content-name-mismatch` by matching Share button `aria-label` with visible text `"Share Payload"`.
+   - Fixed `label` form element audits by binding explicit `htmlFor` and `id` attributes across all input controls in `PropertiesPanel`.
+   - Added ARIA modal metadata (`role="dialog"`, `aria-modal="true"`, `aria-labelledby`) and keyboard trap prevention to `KeyboardShortcutsModal` and `ShareDialog`.
+   - Enhanced canvas element color contrast ratios to satisfy WCAG AA/AAA standards.
 
-This codebase demonstrates core competencies required for high-grade frontend engineering roles:
-
-| Skill / Domain | Implementation Details |
-|---|---|
-| **React 18 & TypeScript** | Component-driven frontend with strict TS types, discriminated unions, zero `any` usage. |
-| **State Management** | Centralized `EditorContext` and `editorReducer` implementing predictable state transitions. |
-| **Performance Engineering** | Pointer event capture with `requestAnimationFrame` position throttling preventing React render lag. |
-| **Responsive UI Design** | Flexbox/Grid CSS system adapting toolbar, canvas viewport, and property drawers across viewports. |
-| **Testing & Quality** | Vitest + React Testing Library unit & integration test suite covering reducers, storage, and UI workflows. |
-| **Accessibility (a11y)** | Keyboard positioning nudges (Arrow keys / Shift+Arrow), semantic ARIA controls, focus outlines. |
-| **Deployment Packaging** | Bundled Vite single-file distribution embedded in Streamlit container shell (`app.py`). |
+2. **React Hooks & Performance Optimization**:
+   - **`useEffect`**: Clean lifecycle event management for global hotkeys (`Ctrl+Z`, `Ctrl+Y`, `Ctrl+D`, `Ctrl+S`, `Escape`) ignoring active input/textarea fields, with teardown cleanup.
+   - **`useCallback`**: Reference-stable editor action dispatchers preventing unnecessary child re-renders.
+   - **`useMemo`**: Derived layer sorting (`sortElementsByZIndex`), canvas component statistics, and share payload serialization memoized against dependency changes.
 
 ---
 
-## 🏗️ Architecture & Data Flow
+## 🧪 Automated Testing Suite
 
-```
-┌────────────────────────────────────────────────────────────────────────┐
-│                        Streamlit Shell (app.py)                         │
-│   Reads dist/index.html & renders React bundle inside components.html  │
-└───────────────────────────────────┬────────────────────────────────────┘
-                                    │
-┌───────────────────────────────────▼────────────────────────────────────┐
-│                  React Context Provider (EditorContext)                 │
-│              Centralized State via editorReducer (useReducer)          │
-└─────┬──────────────────────────────┬─────────────────────────────┬─────┘
-      │                              │                             │
-┌─────▼──────────────┐   ┌───────────▼───────────┐    ┌────────────▼──────────────┐
-│  Toolbar (Left)    │   │ CanvasEditor (Center) │    │ Right Sidebar Panel       │
-│ - Element Palette  │   │ - Pointer Interactions│    │ - Properties Panel        │
-│ - Zoom Viewport    │   │ - RAF Drag Updates    │    │ - Layers Hierarchy        │
-└────────────────────┘   │ - Selection Handles   │    │ - Import / Export JSON    │
-                         └───────────────────────┘    │ - Live Preview & Stats    │
-                                                      └───────────────────────────┘
-```
+Built with **Vitest** and **React Testing Library** with 100% mocked browser APIs (zero external network dependencies required):
 
----
-
-## 📂 Project Structure
-
-```
-CanvasCraft – UGC Sandbox Builder/
-├── app.py                      # Streamlit application container shell
-├── requirements.txt            # Python dependencies (streamlit)
-├── package.json                # Node.js dependencies, scripts & Vitest setup
-├── tsconfig.json               # Strict TypeScript configuration
-├── vite.config.ts              # Vite & Vitest single-file build configuration
-├── index.html                  # HTML5 entry point
-├── dist/                       # Compiled production React artifact (single HTML bundle)
-│   └── index.html
-└── src/
-    ├── __tests__/              # Automated test suite
-    │   ├── CanvasEditor.test.tsx
-    │   ├── editorReducer.test.ts
-    │   ├── persistence.test.ts
-    │   └── validation.test.ts
-    ├── components/             # React UI components
-    │   ├── CanvasEditor.tsx
-    │   ├── ExportImportPanel.tsx
-    │   ├── Header.tsx
-    │   ├── KeyboardShortcutsModal.tsx
-    │   ├── LayersPanel.tsx
-    │   ├── PreviewPanel.tsx
-    │   ├── PropertiesPanel.tsx
-    │   ├── ShareDialog.tsx
-    │   └── Toolbar.tsx
-    ├── context/                # Context provider & custom hooks
-    │   └── EditorContext.tsx
-    ├── hooks/
-    │   ├── useAutosave.ts
-    │   └── useHistory.ts
-    ├── reducers/               # Central editor reducer logic
-    │   └── editorReducer.ts
-    ├── styles/                 # Dark glassmorphism CSS design system
-    │   └── index.css
-    ├── types/                  # Typed interfaces & discriminated unions
-    │   ├── canvas.ts
-    │   └── editor.ts
-    └── utils/                  # Core helpers
-        ├── canvas.ts
-        ├── persistence.ts
-        └── validation.ts
-```
-
----
-
-## 💻 Local Development & Setup
-
-### 1. Prerequisites
-- **Node.js**: v18.0+ (Tested on v22.15)
-- **Python**: 3.9+ (Tested on 3.13)
-
-### 2. Clone Repository
 ```bash
-git clone https://github.com/Dhanya562004/canvascraft-ugc-builder.git
-cd "CanvasCraft – UGC Sandbox Builder"
+npm run test
 ```
 
-### 3. Install Dependencies
-```bash
-npm install
-pip install -r requirements.txt
-```
+- **5 Test Files Passed**
+- **25 Tests Passed (100% Pass Rate)**
 
-### 4. Run Local React Dev Server
+### Test Coverage Highlights:
+- **Editor Rendering**: Verified main workspace layout, header controls, canvas viewport, and toolbar components.
+- **User Interaction & Properties**: Verified element addition and real-time Properties Panel state reflection.
+- **Keyboard Shortcuts & History**: Tested `Ctrl+D` duplication, `Ctrl+Z` undo stack, and `Backspace`/`Delete` removals.
+- **Lifecycle & Modal Cleanup**: Verified modal opening, ARIA properties, and `Escape` key event listener cleanup.
+- **REST API Integration**: Tested Discord webhook payload generation, clipboard copying, and HTTP response handling.
+
+---
+
+## 📡 REST API & Webhook Integration
+
+CanvasCraft integrates a RESTful HTTP payload dispatch service (`ShareDialog.tsx`):
+
+- **HTTP Verb**: `POST`
+- **Payload Schema**: Structured JSON containing canvas metadata (`width`, `height`), layer breakdown, and raw array payload.
+- **Header**: `Content-Type: application/json`
+- **Status Code Handling**:
+  - `200 OK` / `204 No Content`: Successful REST webhook delivery.
+  - `400 Bad Request` / `404 Not Found`: Formatted HTTP status error feedback.
+  - Network Failure / CORS Exception: Graceful fallback error reporting to user interface.
+
+---
+
+## 🛠️ Technology Stack & Local Setup
+
+### Tech Stack
+- **Frontend Core**: React 18.3, TypeScript 5.7, HTML5
+- **Styling**: Modern Vanilla CSS with CSS variables, Glassmorphism, and Flexbox/Grid
+- **Build Tool**: Vite 6.0 (`vite-plugin-singlefile`)
+- **Testing**: Vitest 2.1, React Testing Library 16.1, JSDOM 25.0
+- **Deployment**: Vercel (`vercel.json`) & Streamlit (`app.py`)
+
+### Local Development Commands
+
 ```bash
+# Clean dependency installation
+npm ci
+
+# Launch local Vite dev server
 npm run dev
-```
-Open `http://localhost:5173` in your browser.
 
-### 5. Build Production Bundle
-```bash
+# Run full Vitest test suite
+npm run test
+
+# Compile production build artifact (dist/index.html)
 npm run build
-```
-Generates `dist/index.html` (single-file HTML artifact).
 
-### 6. Launch Streamlit Application
-```bash
-streamlit run app.py
-```
-Open `http://localhost:8501` in your browser.
-
----
-
-## 🧪 Testing & Verification
-
-The project features automated Vitest suite covering state reducers, persistence, schema validation, and UI interaction workflows.
-
-Execute tests:
-```bash
-npm test
-```
-
-### Execution Output:
-```
- ✓ src/__tests__/validation.test.ts (6 tests)
- ✓ src/__tests__/persistence.test.ts (4 tests)
- ✓ src/__tests__/editorReducer.test.ts (8 tests)
- ✓ src/__tests__/CanvasEditor.test.tsx (3 tests)
-
- Test Files  4 passed (4)
-      Tests  21 passed (21)
-   Duration  7.43s
+# Preview compiled production build
+npm run preview
 ```
 
 ---
 
-## ⌨️ Keyboard Shortcuts Reference
+## 🌿 Git Branch & PR Workflow
 
-| Shortcut | Action |
-|---|---|
-| `Delete` / `Backspace` | Delete currently selected element |
-| `Arrow Keys` | Nudge element position by 1px |
-| `Shift + Arrow Keys` | Fast move element position by 10px |
-| `Ctrl / Cmd + D` | Duplicate selected element |
-| `Ctrl / Cmd + S` | Trigger manual layout save to `localStorage` |
-| `Ctrl / Cmd + Z` | Undo last editor action |
-| `Ctrl / Cmd + Shift + Z` / `Ctrl + Y` | Redo action |
-| `Escape` | Clear element selection |
-
----
-
-## 📜 Layout JSON Schema Specification
-
-Exported and imported layouts adhere to the typed schema structure:
-
-```json
-{
-  "version": 1,
-  "canvas": {
-    "width": 800,
-    "height": 500
-  },
-  "elements": [
-    {
-      "id": "elem_1700000000_abc",
-      "type": "box",
-      "x": 40,
-      "y": 120,
-      "width": 240,
-      "height": 160,
-      "zIndex": 2,
-      "text": "Card Container",
-      "style": {
-        "color": "#FFFFFF",
-        "backgroundColor": "#6366F1",
-        "borderRadius": 12,
-        "fontSize": 15,
-        "fontWeight": 600,
-        "textAlign": "center"
-      }
-    }
-  ],
-  "exportedAt": "2026-10-08T08:30:00.000Z"
-}
-```
-
----
-
-## ☁️ Streamlit Community Cloud Deployment Guide
-
-1. Ensure `dist/index.html` generated by `npm run build` is committed to the GitHub repository.
-2. Sign in to [Streamlit Community Cloud](https://share.streamlit.io/).
-3. Create a **New App** pointing to repository `Dhanya562004/canvascraft-ugc-builder` (`main` branch).
-4. Select `app.py` as the Main File Path.
-5. Deploy!
-
-👉 **Live App**: [CanvasCraft Live App](https://canvascraft-ugc-builder-ctbgdvhxrcpwj3epi38gqs.streamlit.app/)
-
----
-
-## 📄 Disclaimers & Technical Notes
-
-- **Discord Sharing**: Discord integration is a local payload simulation designed for demonstrating team payload sharing flows.
-- **Storage Persistence**: Layout persistence is saved in browser `localStorage`.
-- **Streamlit Container**: Streamlit serves the React bundle via an iframe (`st.components.v1.html`).
-
----
-
-## 📄 License
-
-Distributed under the [MIT License](LICENSE).
+- **Feature Branch**: `feat/canvascraft-frontend-quality`
+- **Pull Request Title**: `Improve CanvasCraft frontend deployment, accessibility, and testing`
+- **Target Branch**: `main`

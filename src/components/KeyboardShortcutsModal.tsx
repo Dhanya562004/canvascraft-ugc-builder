@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { X, Keyboard } from 'lucide-react';
 
 interface KeyboardShortcutsModalProps {
@@ -6,6 +6,16 @@ interface KeyboardShortcutsModalProps {
 }
 
 export const KeyboardShortcutsModal: React.FC<KeyboardShortcutsModalProps> = ({ onClose }) => {
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        onClose();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [onClose]);
+
   const shortcuts = [
     { key: 'Delete / Backspace', action: 'Delete selected canvas element' },
     { key: 'Arrow Keys', action: 'Nudge selected element position by 1px' },
@@ -15,16 +25,16 @@ export const KeyboardShortcutsModal: React.FC<KeyboardShortcutsModalProps> = ({ 
     { key: 'Ctrl / Cmd + Z', action: 'Undo last editor action' },
     { key: 'Ctrl / Cmd + Shift + Z', action: 'Redo previously undone action' },
     { key: 'Ctrl / Cmd + Y', action: 'Redo action' },
-    { key: 'Escape', action: 'Deselect element / Clear selection' },
+    { key: 'Escape', action: 'Close dialog / Deselect element' },
   ];
 
   return (
-    <div className="modal-overlay" onClick={onClose}>
+    <div className="modal-overlay" onClick={onClose} role="dialog" aria-modal="true" aria-labelledby="shortcuts-modal-title">
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <Keyboard size={20} style={{ color: '#818CF8' }} />
-            <h3 style={{ fontSize: '1.2rem', fontWeight: 800 }}>Keyboard Shortcuts Guide</h3>
+            <h3 id="shortcuts-modal-title" style={{ fontSize: '1.2rem', fontWeight: 800 }}>Keyboard Shortcuts Guide</h3>
           </div>
           <button
             onClick={onClose}

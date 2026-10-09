@@ -66,6 +66,8 @@ export const Toolbar: React.FC = () => {
               style={{ padding: '4px 8px' }}
               onClick={() => handleZoom(-0.1)}
               disabled={state.zoom <= 0.6}
+              aria-label="Zoom out viewport"
+              title="Zoom Out"
             >
               <ZoomOut size={14} />
             </button>
@@ -74,6 +76,8 @@ export const Toolbar: React.FC = () => {
               style={{ padding: '4px 8px' }}
               onClick={() => handleZoom(0.1)}
               disabled={state.zoom >= 1.8}
+              aria-label="Zoom in viewport"
+              title="Zoom In"
             >
               <ZoomIn size={14} />
             </button>

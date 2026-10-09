@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useEditor } from '../context/EditorContext';
 import { Layout, Code, ChevronDown, ChevronUp } from 'lucide-react';
 
@@ -6,9 +6,15 @@ export const PreviewPanel: React.FC = () => {
   const { state } = useEditor();
   const [showJson, setShowJson] = useState(false);
 
-  const textCount = state.elements.filter((e) => e.type === 'text').length;
-  const boxCount = state.elements.filter((e) => e.type === 'box').length;
-  const buttonCount = state.elements.filter((e) => e.type === 'button').length;
+  const stats = useMemo(() => {
+    return {
+      textCount: state.elements.filter((e) => e.type === 'text').length,
+      boxCount: state.elements.filter((e) => e.type === 'box').length,
+      buttonCount: state.elements.filter((e) => e.type === 'button').length,
+    };
+  }, [state.elements]);
+
+  const { textCount, boxCount, buttonCount } = stats;
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>

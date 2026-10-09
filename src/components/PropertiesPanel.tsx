@@ -27,8 +27,9 @@ export const PropertiesPanel: React.FC = () => {
 
       {/* Label Text Input */}
       <div className="form-group">
-        <label className="form-label">Element Content / Label</label>
+        <label htmlFor="prop-element-text" className="form-label">Element Content / Label</label>
         <input
+          id="prop-element-text"
           type="text"
           className="form-input"
           value={selectedElem.text}
@@ -39,11 +40,13 @@ export const PropertiesPanel: React.FC = () => {
       {/* Color Controls */}
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
         <div className="form-group">
-          <label className="form-label">Text Color</label>
+          <label htmlFor="prop-text-color" className="form-label">Text Color</label>
           <div className="color-picker-wrapper">
             <input
+              id="prop-text-color"
               type="color"
               className="color-picker-input"
+              aria-label="Text Color"
               value={selectedElem.style.color || '#000000'}
               onChange={(e) =>
                 updateElement(selectedElem.id, {
@@ -59,11 +62,13 @@ export const PropertiesPanel: React.FC = () => {
 
         {selectedElem.type !== 'text' && (
           <div className="form-group">
-            <label className="form-label">Background Color</label>
+            <label htmlFor="prop-bg-color" className="form-label">Background Color</label>
             <div className="color-picker-wrapper">
               <input
+                id="prop-bg-color"
                 type="color"
                 className="color-picker-input"
+                aria-label="Background Color"
                 value={selectedElem.style.backgroundColor || '#6366F1'}
                 onChange={(e) =>
                   updateElement(selectedElem.id, {
@@ -82,8 +87,9 @@ export const PropertiesPanel: React.FC = () => {
       {/* Dimensions: Width & Height */}
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
         <div className="form-group">
-          <label className="form-label">Width (px)</label>
+          <label htmlFor="prop-width" className="form-label">Width (px)</label>
           <input
+            id="prop-width"
             type="number"
             className="form-input"
             min={30}
@@ -96,8 +102,9 @@ export const PropertiesPanel: React.FC = () => {
         </div>
 
         <div className="form-group">
-          <label className="form-label">Height (px)</label>
+          <label htmlFor="prop-height" className="form-label">Height (px)</label>
           <input
+            id="prop-height"
             type="number"
             className="form-input"
             min={20}
@@ -113,8 +120,9 @@ export const PropertiesPanel: React.FC = () => {
       {/* Position X & Y */}
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
         <div className="form-group">
-          <label className="form-label">Position X (px)</label>
+          <label htmlFor="prop-pos-x" className="form-label">Position X (px)</label>
           <input
+            id="prop-pos-x"
             type="number"
             className="form-input"
             min={0}
@@ -127,8 +135,9 @@ export const PropertiesPanel: React.FC = () => {
         </div>
 
         <div className="form-group">
-          <label className="form-label">Position Y (px)</label>
+          <label htmlFor="prop-pos-y" className="form-label">Position Y (px)</label>
           <input
+            id="prop-pos-y"
             type="number"
             className="form-input"
             min={0}
@@ -144,8 +153,9 @@ export const PropertiesPanel: React.FC = () => {
       {/* Typography & Border Radius */}
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
         <div className="form-group">
-          <label className="form-label">Font Size (px)</label>
+          <label htmlFor="prop-font-size" className="form-label">Font Size (px)</label>
           <input
+            id="prop-font-size"
             type="number"
             className="form-input"
             min={10}
@@ -161,8 +171,9 @@ export const PropertiesPanel: React.FC = () => {
 
         {selectedElem.type !== 'text' && (
           <div className="form-group">
-            <label className="form-label">Corner Radius</label>
+            <label htmlFor="prop-corner-radius" className="form-label">Corner Radius</label>
             <input
+              id="prop-corner-radius"
               type="number"
               className="form-input"
               min={0}

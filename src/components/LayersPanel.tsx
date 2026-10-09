@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useEditor } from '../context/EditorContext';
 import { Layers, ArrowUp, ArrowDown } from 'lucide-react';
 import { sortElementsByZIndex } from '../utils/canvas';
@@ -6,7 +6,10 @@ import { sortElementsByZIndex } from '../utils/canvas';
 export const LayersPanel: React.FC = () => {
   const { state, selectElement, bringForward, sendBackward } = useEditor();
 
-  const sortedElements = sortElementsByZIndex(state.elements).reverse(); // top-most z-index on top
+  const sortedElements = useMemo(
+    () => sortElementsByZIndex(state.elements).reverse(),
+    [state.elements]
+  );
 
   return (
     <div>
